@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="TodoNotes.Business/TodoNotes.Business.csproj" Id="88eb3c9e-b5cb-418e-8092-abe6f63dd1ae" />
+  <Project Path="TodoNotes.DataAccess/TodoNotes.DataAccess.csproj" Id="2b39875f-d956-4885-b6f8-9123f43d8401" />
+  <Project Path="TodoNotes.Entities/TodoNotes.Entities.csproj" Id="2cfe752d-86d2-47ea-be32-ce139e705445" />
+  <Project Path="TodoNotes.WinFormsUI/TodoNotes.WinFormsUI.csproj" Id="2fd008f9-a502-4968-8121-161f635ea99c" />
+</Solution>
