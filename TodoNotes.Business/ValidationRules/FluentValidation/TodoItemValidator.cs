@@ -1,15 +1,18 @@
 ﻿using FluentValidation;
 using TodoNotes.Entities.Concrete;
 
-public class TodoItemValidator : AbstractValidator<TodoItem>
+namespace TodoNotes.Business.ValidationRules.FluentValidation
 {
-    public TodoItemValidator()
+    public class TodoItemValidator : AbstractValidator<TodoItem>
     {
-        RuleFor(x => x.Title)
-            .NotEmpty()
-            .MinimumLength(3);
+        public TodoItemValidator()
+        {
+            RuleFor(x => x.Title)
+                .NotEmpty().WithMessage("Title is required.")
+                .MinimumLength(3).WithMessage("Title must be at least 3 characters long.");
 
-        RuleFor(x => x.Description)
-            .NotEmpty();
+            RuleFor(x => x.Description)
+                .NotEmpty().WithMessage("Description is required.");
+        }
     }
 }

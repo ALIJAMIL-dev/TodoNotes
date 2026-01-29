@@ -52,10 +52,19 @@ namespace TodoNotes.WinFormsUI
                 Content = txtContext.Text,
                 CreatedAt = DateTime.Now
             };
-
-            _noteService.Add(note);
-            LoadNotes();
-            ClearNoteForm();
+            try
+            {
+                _noteService.Add(note);
+                LoadNotes();
+                ClearNoteForm();
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType().FullName == "FluentValidation.ValidationException")
+                    MessageBox.Show(ex.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         private void ClearNoteForm()
         {
@@ -100,19 +109,33 @@ namespace TodoNotes.WinFormsUI
                 MessageBox.Show("Select a todo first.");
                 return;
             }
-
-            var todo = _todoService.GetById(_selectedTodoId);
-
-            var confirm = MessageBox.Show(
-                "Are you sure?",
-                "Delete",
-                MessageBoxButtons.YesNo);
-
-            if (confirm == DialogResult.Yes)
+            try
             {
-                _todoService.Delete(todo);
-                LoadTodos();
-                ClearForm();
+                var todo = _todoService.GetById(_selectedTodoId);
+                if (todo == null)
+                {
+                    MessageBox.Show("The selected todo could not be found.");
+                    return;
+                }
+
+                var confirm = MessageBox.Show(
+                    "Are you sure?",
+                    "Delete",
+                    MessageBoxButtons.YesNo);
+
+                if (confirm == DialogResult.Yes)
+                {
+                    _todoService.Delete(todo);
+                    LoadTodos();
+                    ClearForm();
+                }
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType().FullName == "FluentValidation.ValidationException")
+                    MessageBox.Show(ex.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
@@ -142,15 +165,36 @@ namespace TodoNotes.WinFormsUI
         }
         private void btnUpdate_Click(object sender, EventArgs e)
         {
-            var updatedTodo = new TodoItem
+            if (_selectedTodoId == 0)
             {
-                Title = txtTitle.Text,
-                Description = txtDescription.Text,
-                IsCompleted = chkCompleted.Checked
-            };
-            _todoService.Update(updatedTodo);
-            LoadTodos();
-            ClearForm();
+                MessageBox.Show("Select a todo first.");
+                return;
+            }
+
+            try
+            {
+                var todo = _todoService.GetById(_selectedTodoId);
+                if (todo == null)
+                {
+                    MessageBox.Show("The selected todo could not be found.");
+                    return;
+                }
+
+                todo.Title = txtTitle.Text;
+                todo.Description = txtDescription.Text;
+                todo.IsCompleted = chkCompleted.Checked;
+
+                _todoService.Update(todo);
+                LoadTodos();
+                ClearForm();
+            }
+            catch (Exception ex)
+            {
+                if (ex.GetType().FullName == "FluentValidation.ValidationException")
+                    MessageBox.Show(ex.Message, "Validation Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                else
+                    MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
         /*
         private void HandleException(Exception ex)

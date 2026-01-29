@@ -9,6 +9,10 @@ namespace TodoNotes.Entities.Concrete
 {
     public class TodoItem : IEntity
     {
+        public TodoItem()
+        {
+            CreatedAt = DateTime.UtcNow;
+        }
         public int Id { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }

@@ -193,6 +193,7 @@ namespace TodoNotes.WinFormsUI
             this.btnAddNotes.TabIndex = 3;
             this.btnAddNotes.Text = "Add";
             this.btnAddNotes.UseVisualStyleBackColor = true;
+            this.btnAddNotes.Click += new System.EventHandler(this.btnNoteAdd_Click);
             // 
             // txtContext
             // 
@@ -216,6 +217,7 @@ namespace TodoNotes.WinFormsUI
             this.dgvNotes.Name = "dgvNotes";
             this.dgvNotes.Size = new System.Drawing.Size(748, 250);
             this.dgvNotes.TabIndex = 0;
+            this.dgvNotes.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvNotes_CellClick);
             // 
             // Form1
             // 
